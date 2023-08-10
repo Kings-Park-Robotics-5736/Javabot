@@ -39,6 +39,8 @@ public class RobotContainer {
     private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3);
     private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);
 
+    public static final Limelight m_limelight = Limelight.getInstance();
+
     // The driver's controller
     XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
 
@@ -72,6 +74,8 @@ public class RobotContainer {
     public RobotContainer() {
         // Configure the button bindings
         configureButtonBindings();
+        // Initialize Limelight
+        initializeStartup();
 
         // Configure default commands
         m_robotDrive.setDefaultCommand(
@@ -80,6 +84,12 @@ public class RobotContainer {
                 new RunCommand(
                         () -> driveWithJoystick(true),
                         m_robotDrive));
+    }
+
+     private void initializeStartup()
+    {
+        /* Turn off Limelight LED when first started up so it doesn't blind drive team. */
+        m_limelight.turnOffLED();
     }
 
     /**
