@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 
 
 /**
@@ -21,12 +23,24 @@ public class Limelight {
         PIPELINE(0),
         OFF(1),
         BLINK(2),
-        ON(3)
+        ON(3);
+
+        private int value;
+
+        private LEDMode(int mode) {
+            this.value = mode;
+        }
     }
 
     public enum CamMode {
         VISION(0),
-        DRIVER(1)
+        DRIVER(1);
+
+        private int value;
+
+        private CamMode(int mode) {
+            this.value = mode;
+        }
     }
 
     /**
@@ -44,61 +58,61 @@ public class Limelight {
 
     /**
      * Get current LED mode
-     * @return LEDMode(0-4)
+     * @return int (0-4)
      */
-    public getLEDMode() {
-        return ledMode;
+    public int getLEDMode() {
+        return ledMode.getNumber(0).intValue();
     }
 
     /**
      * Set LED mode
      * @param mode LEDMode(0-4)
      */
-    public setLEDMode(LEDMode mode) {
-        ledMode.setNumber(mode);
+    public void setLEDMode(LEDMode mode) {
+        ledMode.setNumber(mode.value);
     }
 
     /**
      * Set LED mode to ON
      */
-    public setLEDOn() {
-        ledMode.setNumber(LEDMode.ON);
+    public void setLEDOn() {
+        ledMode.setNumber(LEDMode.ON.value);
     }
 
     /**
      * Set LED mode to OFF
      */
-    public setLEDOff() {
-        ledMode.setNumber(LEDMODE.OFF);
+    public void setLEDOff() {
+        ledMode.setNumber(LEDMode.OFF.value);
     }
 
     /**
      * Set LED mode to BLINK
      */
-    public setLEDBlink() {
-        ledMode.setNumber(LEDMODE.BLINK);
+    public void setLEDBlink() {
+        ledMode.setNumber(LEDMode.BLINK.value);
     }
 
     /**
      * Get current camera mode
-     * @return CamMode(0-1)
+     * @return int (0-1)
      */
-    public getCamMode() {
-        return camMode;
+    public int getCamMode() {
+        return camMode.getNumber(0).intValue();
     }
 
     /**
      * Set camera mode
      * @param mode CamMode(0-1)
      */
-    public setCamMode(CamMode mode) {
-        camMode.setNumber(mode);
+    public void setCamMode(CamMode mode) {
+        camMode.setNumber(mode.value);
     }
 
     /**
      * Preset operation mode - LED set to OFF, camera set to DRIVER
      */
-    public setModeDriver() {
+    public void setModeDriver() {
         this.setLEDMode(LEDMode.OFF);
         this.setCamMode(CamMode.DRIVER);
     }
@@ -106,7 +120,7 @@ public class Limelight {
     /**
      * Preset operation mode - LED set to ON, camera set to VISION
      */
-    public setModeVision() {
+    public void setModeVision() {
         this.setLEDMode(LEDMode.ON);
         this.setCamMode(CamMode.VISION);
     }
@@ -115,7 +129,7 @@ public class Limelight {
      * Get horizontal offset to target
      * @return -29.8 - 29.8 degrees
      */
-    public getTargetOffsetX() {
+    public double getTargetOffsetX() {
         return tx.getDouble(0.0);
     }
 
@@ -123,7 +137,7 @@ public class Limelight {
      * Get vertical offset to target
      * @return -24.85 - 24.85 degrees
      */
-    public getTargetOffsetY() {
+    public double getTargetOffsetY() {
         return ty.getDouble(0.0);
     }
 
@@ -131,7 +145,7 @@ public class Limelight {
      * Check for a detected target
      * @return boolean - true if target is found else false
      */
-    public checkValidTarget() {
+    public boolean checkValidTarget() {
         if (tv.getNumber(0).intValue() == 1) {
             return true;
         } else {
@@ -143,8 +157,32 @@ public class Limelight {
      * Get target area
      * @return 0% - 100% of  image
      */
-    public getTargetArea() {
+    public double getTargetArea() {
         return ta.getDouble(0.0);
+    }
+
+    /**
+     * Command - toggle LED ON/OFF
+     * @return Command
+     *
+    public Command ToggleLEDCommand() {
+        return new FunctionalCommand(
+            () -> {},
+            () -> this.setLEDOn(),
+            (interrupted) -> this.setLEDOff(),
+            () -> false, this);
+    }
+    */
+
+    /**
+     * Command - toggle limelight LED ON/OFF
+     */
+    public void toggleLED() {
+        if (this.getLEDMode() == LEDMode.ON.value) {
+            this.setLEDOff();
+        } else {
+            this.setLEDOn();
+        }
     }
 
 }

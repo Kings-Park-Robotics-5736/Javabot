@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -91,6 +92,24 @@ public class RobotContainer {
                         m_robotDrive));
     }
 
+
+    /**
+     * Command to toggle limelight LED ON/OFF
+     * @return Command
+     */
+    private Command toggleLimelightLED() {
+        return Commands.runOnce(() -> m_limelight.toggleLED());
+    }
+
+    /**
+     * Command to detect AprilTag value and print to smart dashboard
+     * @return Command
+     */
+    private void printAprilTag() {
+        Double offsetX = m_limelight.getTargetOffsetX();
+        SmartDashboard.putNumber("LimelightX", offsetX);
+    }
+
     /**
      * Use this method to define your button->command mappings. Buttons can be
      * created by
@@ -117,12 +136,12 @@ public class RobotContainer {
                 .toggleOnTrue(m_intake.RunIntakeBackwardCommand());
         */
 
-        // set LED ON
+        // toggle LED ON/OFF
         new JoystickButton(m_actionController, XboxController.Button.kB.value)
-                .toggleOnTrue(m_limelight.setLEDON());
-        // set LED OFF
+                .toggleOnTrue(this.toggleLimelightLED());
+        // print detected AprilTag value to smart dashboard
         new JoystickButton(m_actionController, XboxController.Button.kX.value)
-                .toggleOnTrue(m_limelight.setLEDOFF());
+                .toggleOnTrue(Commands.runOnce(() -> this.printAprilTag()));
 
 
        
