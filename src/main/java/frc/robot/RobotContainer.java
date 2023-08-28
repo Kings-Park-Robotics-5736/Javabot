@@ -20,6 +20,7 @@ import frc.robot.commands.TrajectoryCommandsFactory;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.escalator.EscalatorAssemblySubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
+import frc.robot.subsystems.Limelight;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -38,6 +39,8 @@ public class RobotContainer {
     private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3);
     private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3);
     private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);
+
+    public Limelight m_limelight;
 
     // The driver's controller
     XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
@@ -73,6 +76,12 @@ public class RobotContainer {
         // Configure the button bindings
         configureButtonBindings();
 
+        // Create Limelight instance
+        m_limelight = new Limelight();
+
+        // Set limelight LED to OFF on startup
+        m_limelight.setLEDOff();
+
         // Configure default commands
         m_robotDrive.setDefaultCommand(
                 // The left stick controls translation of the robot.
@@ -100,13 +109,20 @@ public class RobotContainer {
                 .whileTrue(m_robotDrive.driveXMetersPID(1));
 
 
-
+        /* temporarily removed to test limelight functionality
         new JoystickButton(m_actionController, XboxController.Button.kB.value)
                 .toggleOnTrue(m_intake.RunIntakeForwardCommand());
 
         new JoystickButton(m_actionController, XboxController.Button.kX.value)
                 .toggleOnTrue(m_intake.RunIntakeBackwardCommand());
+        */
 
+        // set LED ON
+        new JoystickButton(m_actionController, XboxController.Button.kB.value)
+                .toggleOnTrue(m_limelight.setLEDON());
+        // set LED OFF
+        new JoystickButton(m_actionController, XboxController.Button.kX.value)
+                .toggleOnTrue(m_limelight.setLEDOFF());
 
 
        
