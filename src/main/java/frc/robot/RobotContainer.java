@@ -22,6 +22,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.escalator.EscalatorAssemblySubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.Limelight;
+import frc.robot.commands.CenterToTargetAprilTagCommand;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -107,7 +108,37 @@ public class RobotContainer {
      */
     private void printAprilTag() {
         Double offsetX = m_limelight.getTargetOffsetX();
+        Double offsetY = m_limelight.getTargetOffsetY();
+        Boolean validTarget = m_limelight.checkValidTarget();
+        Double targetArea = m_limelight.getTargetArea();
+        Double targetID = m_limelight.getTargetID();
+        double[] botpose = m_limelight.getBotPose();
+        double[] botpose_wpiblue = m_limelight.getBotPoseBlue();
+        double[] camerapose_targetspace = m_limelight.getCameraPoseTargetSpace();
+        double[] targetpose_cameraspace = m_limelight.getTargetPoseCameraSpace();
+        double[] targetpose_robotspace = m_limelight.getTargetPoseBotSpace();
+        double[] botpose_targetspace = m_limelight.getBotPoseTargetSpace();
+        double[] camerapose_robotspace = m_limelight.getCameraPoseBotSpace();
+
         SmartDashboard.putNumber("LimelightX", offsetX);
+        SmartDashboard.putNumber("LimelightY", offsetY);
+        SmartDashboard.putNumber("LimelightTargetFound", (validTarget == true) ? 1 : 0);
+        SmartDashboard.putNumber("LimelightArea", targetArea);
+        SmartDashboard.putNumber("LimelightTagID", targetID);
+        
+        SmartDashboard.putNumber("LimelightBotPose0", botpose[0]);
+        SmartDashboard.putNumber("LimelightBotPose1", botpose[1]);
+        SmartDashboard.putNumber("LimelightBotPose2", botpose[2]);
+        SmartDashboard.putNumber("LimelightBotPose3", botpose[3]);
+        SmartDashboard.putNumber("LimelightBotPose4", botpose[4]);
+        SmartDashboard.putNumber("LimelightBotPose5", botpose[5]);
+
+        SmartDashboard.putNumber("LimelightBotPose0", targetpose_robotspace[0]);
+        SmartDashboard.putNumber("LimelightBotPose1", targetpose_robotspace[1]);
+        SmartDashboard.putNumber("LimelightBotPose2", targetpose_robotspace[2]);
+        SmartDashboard.putNumber("LimelightBotPose3", targetpose_robotspace[3]);
+        SmartDashboard.putNumber("LimelightBotPose4", targetpose_robotspace[4]);
+        SmartDashboard.putNumber("LimelightBotPose5", targetpose_robotspace[5]);
     }
 
     /**
@@ -142,7 +173,8 @@ public class RobotContainer {
         // print detected AprilTag value to smart dashboard
         new JoystickButton(m_actionController, XboxController.Button.kX.value)
                 .toggleOnTrue(Commands.runOnce(() -> this.printAprilTag()));
-
+        new JoystickButton(m_actionController, XboxController.Button.kY.value)
+                .whileTrue(new CenterToTargetAprilTagCommand(m_robotDrive, m_limelight, true));
 
        
         
@@ -153,10 +185,10 @@ public class RobotContainer {
         .onTrue(m_escalatorAssembly.ResetEscalatorEncoderCommand());
 
 
-
+        /*
         new JoystickButton(m_actionController, XboxController.Button.kY.value)
                 .whileTrue(m_escalatorAssembly.RunElevatorToPositionCommand(0).andThen(JoystickCommandsFactory.RumbleControllerTillCancel(m_actionController)));
-
+        */
         new JoystickButton(m_actionController, XboxController.Button.kA.value)
                 .whileTrue(m_escalatorAssembly.RunElevatorToPositionCommand(59).andThen(JoystickCommandsFactory.RumbleControllerTillCancel(m_actionController)));
 

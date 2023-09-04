@@ -16,6 +16,15 @@ public class Limelight {
     private static NetworkTableEntry ty;
     private static NetworkTableEntry tv;
     private static NetworkTableEntry ta;
+    private static NetworkTableEntry tid;
+    private static NetworkTableEntry botpose;
+    private static NetworkTableEntry botpose_wpiblue;
+    private static NetworkTableEntry botpose_wpired;
+    private static NetworkTableEntry camerapose_targetspace;
+    private static NetworkTableEntry targetpose_cameraspace;
+    private static NetworkTableEntry targetpose_robotspace;
+    private static NetworkTableEntry botpose_targetspace;
+    private static NetworkTableEntry camerapose_robotspace;
     private static NetworkTableEntry camMode;
     private static NetworkTableEntry ledMode;
 
@@ -52,6 +61,15 @@ public class Limelight {
         ty = table.getEntry("ty"); // vertical offset (-24.85 - 24.85 degrees)
         tv = table.getEntry("tv"); // valid target (0 - 1)
         ta = table.getEntry("ta"); // target area (0% - 100% of image)
+        tid = table.getEntry("tid"); // ID of primary in-view AprilTag
+        botpose = table.getEntry("botpose"); // Robot transform in  field-space
+        botpose_wpiblue = table.getEntry("botpose_wpiblue");
+        botpose_wpired = table.getEntry("botpose_wpired");
+        camerapose_targetspace = table.getEntry("camerapose_targetspace");
+        targetpose_cameraspace = table.getEntry("targetpose_cameraspace");
+        targetpose_robotspace = table.getEntry("targetpose_robotspace");
+        botpose_targetspace = table.getEntry("botpose_targetspace");
+        camerapose_robotspace = table.getEntry("camerapose_robotspace");
         ledMode = table.getEntry("ledMode"); // LED state (0-3)
         camMode = table.getEntry("camMode"); // operation mode (0-1)
     }
@@ -159,6 +177,92 @@ public class Limelight {
      */
     public double getTargetArea() {
         return ta.getDouble(0.0);
+    }
+
+    /**
+     * Get ID of primary in-view AprilTag
+     * @return double
+     */
+    public double getTargetID() {
+        return tid.getDouble(0.0);
+    }
+
+    /**
+     * Get botpose
+     * @return double[]
+     */
+    public double[] getBotPose() {
+        return  botpose.getDoubleArray(new double[6]);
+    }
+
+    /**
+     * Get botpose for blue field side
+     * @return double[]
+     */
+    public double[] getBotPoseBlue() {
+        return botpose_wpiblue.getDoubleArray(new double[6]);
+    }
+
+    /**
+     * Get botpose for red field side
+     * @return double[]
+     */
+    public double[] getBotPoseRed() {
+        return botpose_wpired.getDoubleArray(new double[6]);
+    }
+
+    /**
+     * Get camera 3D transform in the coordinate system of the primary in-view AprilTag
+     * @return double[]
+     */
+    public double[] getCameraPoseTargetSpace() {
+        return camerapose_targetspace.getDoubleArray(new double[6]);
+    }
+
+    /**
+     * Get AprilTag 3D transform in the coordinate system of the camera
+     * @return double[]
+     */
+    public double[] getTargetPoseCameraSpace() {
+        return targetpose_cameraspace.getDoubleArray(new double[6]);
+    }
+
+    /**
+     * Get AprilTag 3D transform in the coordinate system of the robot
+     * @return double[]
+     */
+    public double[] getTargetPoseBotSpace() {
+        return targetpose_robotspace.getDoubleArray(new double[6]);
+    }
+
+    /**
+     * Get robot 3D transform in the coordinate system of the AprilTag
+     * @return double[]
+     */
+    public double[] getBotPoseTargetSpace() {
+        return botpose_targetspace.getDouble(new double[6]);
+    }
+
+    /**
+     * Get camera 3D transform in  the coordinate system of the robot
+     * @return double[]
+     */
+    public double[] getCameraPoseBotSpace() {
+        return camerapose_robotspace.getDouble(new double[6]);
+    }
+
+
+
+
+
+
+    /**
+     * Get distance to AprilTag
+     * @return double
+     */
+    public double getTargetDistance() {
+        //vertical offset / tan(a1+a2)
+        return 0.0;
     }
 
     /**
