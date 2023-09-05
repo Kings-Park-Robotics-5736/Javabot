@@ -60,6 +60,8 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
+    // turn off limelight LED on disable
+    m_robotContainer.m_limelight.setLEDOff();
   }
 
   @Override
