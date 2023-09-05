@@ -165,13 +165,13 @@ public class RobotContainer {
 
                 new JoystickButton(m_driverController, XboxController.Button.kBack.value)
                                 .onTrue(Commands.runOnce(() -> m_robotDrive.zeroHeading(), m_robotDrive));
-
+                /*
                 new JoystickButton(m_driverController, XboxController.Button.kX.value)
                                 .whileTrue(new DriveDistanceCommand(m_robotDrive, 1));
 
                 new JoystickButton(m_driverController, XboxController.Button.kY.value)
                                 .whileTrue(new CenterToTargetCommand(m_robotDrive, m_picam, true));
-
+                */
                 // new JoystickButton(m_driverController, XboxController.Button.kA.value)
                 // .onTrue(new PathPlanFromDynamicStartCommand(m_robotDrive::getPose,
                 // m_robotDrive,new Pose2d(0,0,new Rotation2d(0))));

@@ -1,4 +1,4 @@
-package frc.robot.commands.drive;
+package frc.robot.commands;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -8,13 +8,14 @@ import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.vision.Limelight;
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.drive.DriveCommandsCommon;
 
 /**
  * @brief 
  * 
  * @note 
  */
-public class CenterToTargetAprilTagCommand extends CommandBase {
+public class RotateForTagIDCommand extends CommandBase {
     private DriveSubsystem m_drive;
     private boolean m_infinite;
 
@@ -28,7 +29,7 @@ public class CenterToTargetAprilTagCommand extends CommandBase {
     private final ProfiledPIDController m_controller_theta = new ProfiledPIDController(1, 0, 0.000, m_constraints,
             Constants.kDt);
 
-    public CenterToTargetCommand(DriveSubsystem robot_drive, Limelight limelight, boolean infinite) {
+    public RotateForTagIDCommand(DriveSubsystem robot_drive, Limelight limelight, boolean infinite) {
         this.m_drive = robot_drive;
 
         this.m_limelight = limelight;
@@ -59,7 +60,7 @@ public class CenterToTargetAprilTagCommand extends CommandBase {
 
     @Override
     public void execute() {
-        centerOnTarget();
+        circleForTarget();
     }
 
     @Override

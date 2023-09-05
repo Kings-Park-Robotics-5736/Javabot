@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.vision;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -240,7 +240,7 @@ public class Limelight {
      * @return double[]
      */
     public double[] getBotPoseTargetSpace() {
-        return botpose_targetspace.getDouble(new double[6]);
+        return botpose_targetspace.getDoubleArray(new double[6]);
     }
 
     /**
@@ -248,7 +248,7 @@ public class Limelight {
      * @return double[]
      */
     public double[] getCameraPoseBotSpace() {
-        return camerapose_robotspace.getDouble(new double[6]);
+        return camerapose_robotspace.getDoubleArray(new double[6]);
     }
 
 
