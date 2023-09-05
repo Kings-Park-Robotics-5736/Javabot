@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.robot.utils;
 
 
 /**
@@ -39,7 +39,7 @@ public final class Types {
     public final double high;
 
 
-    Limits(double low, double high) {
+    public Limits(double low, double high) {
       this.low = low;
       this.high = high;
     }

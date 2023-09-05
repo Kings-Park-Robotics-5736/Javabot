@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems;
+package frc.robot.subsystems.drive;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -15,9 +15,10 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ModuleConstants;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.utils.MathUtils;
 
 
 public class SwerveModule {
@@ -85,12 +86,10 @@ public class SwerveModule {
     m_turningPIDController.enableContinuousInput(-Math.PI, Math.PI);
   }
 
-  private double degressToRadians(double degrees) {
-    return degrees * Math.PI / 180;
-  }
+
 
   private double getTurnEncoderPositionInRadians() {
-    double retVal = degressToRadians(m_turningEncoder.getAbsolutePosition());
+    double retVal = MathUtils.degreesToRadians(m_turningEncoder.getAbsolutePosition());
     return retVal;
   }
 
@@ -141,23 +140,27 @@ public class SwerveModule {
     final double driveFeedforward = m_driveFeedforward.calculate(state.speedMetersPerSecond);
 
     // Calculate the turning motor output from the turning PID controller.
-    final double turnOutput = m_turnPIDController.calculate(getTurnEncoderPositionInRadians(),
+    double turnOutput = m_turnPIDController.calculate(getTurnEncoderPositionInRadians(),
         state.angle.getRadians());
 
-    SmartDashboard.putNumber("velcity set " +m_id,getDriveEncoderVelocity() );
+   // SmartDashboard.putNumber("velcity set " +m_id,getDriveEncoderVelocity() );
  
-    SmartDashboard.putNumber("velcity req " +m_id,state.speedMetersPerSecond );
+    //SmartDashboard.putNumber("velcity req " +m_id,state.speedMetersPerSecond );
 
-    SmartDashboard.putNumber("turn set " +m_id,getTurnEncoderPositionInRadians() );
+    //SmartDashboard.putNumber("turn set " +m_id,getTurnEncoderPositionInRadians() );
  
-    SmartDashboard.putNumber("turn req " +m_id,state.angle.getRadians());
+    //SmartDashboard.putNumber("turn req " +m_id,state.angle.getRadians());
 
-    SmartDashboard.putNumber("drive vo " +m_id,driveOutput );
-    SmartDashboard.putNumber("drive vf " +m_id,driveFeedforward);
+    //SmartDashboard.putNumber("drive vo " +m_id,driveOutput );
+    //SmartDashboard.putNumber("drive vf " +m_id,driveFeedforward);
 
-    final double turnFeedforward =0;// m_turnFeedforward.calculate(m_turningPIDController.getSetpoint().velocity);
+    double turnFeedforward =0;// m_turnFeedforward.calculate(m_turningPIDController.getSetpoint().velocity);
 
     m_driveMotor.setVoltage(driveOutput + driveFeedforward);
+    /*if(turnOutput + turnFeedforward < .05){
+      turnOutput = 0;
+      turnFeedforward = 0;
+    }*/
     m_turningMotor.setVoltage(turnOutput + turnFeedforward);
   }
 

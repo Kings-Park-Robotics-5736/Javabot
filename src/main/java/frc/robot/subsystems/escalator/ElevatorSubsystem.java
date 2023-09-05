@@ -11,8 +11,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Types.Limits;
-import frc.robot.Types.PidConstants;
+import frc.robot.Constants;
+import frc.robot.utils.Types.Limits;
+import frc.robot.utils.Types.PidConstants;
 
 public class ElevatorSubsystem extends SubsystemBase {
 
@@ -29,10 +30,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     private final double kDiffThreshold = 0.15;
     private final int kStaleThreshold = 10;
 
-    private final double kDt = 0.02;
-
     private final TrapezoidProfile.Constraints m_constraints = new TrapezoidProfile.Constraints(100, 100);
-    private final ProfiledPIDController m_controller = new ProfiledPIDController(0.5, 0.0, 0.007, m_constraints, kDt);
+    private final ProfiledPIDController m_controller = new ProfiledPIDController(0.5, 0.0, 0.007, m_constraints,
+            Constants.kDt);
 
     public ElevatorSubsystem(PidConstants pidValues, Limits limits, byte deviceId, String _name) {
 
@@ -92,8 +92,6 @@ public class ElevatorSubsystem extends SubsystemBase {
         setSpeed(0);
     }
 
-
-    
     private void resetEncoder() {
         m_encoder.reset();
     }

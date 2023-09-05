@@ -5,7 +5,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Types.DirectionType;
+import frc.robot.utils.Types.DirectionType;
 
 //1 is escalator
 //2 is lower intake
