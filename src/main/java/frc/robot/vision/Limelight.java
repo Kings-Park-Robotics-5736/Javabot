@@ -72,6 +72,10 @@ public class Limelight {
         camerapose_robotspace = table.getEntry("camerapose_robotspace");
         ledMode = table.getEntry("ledMode"); // LED state (0-3)
         camMode = table.getEntry("camMode"); // operation mode (0-1)
+        pipline = table.getEntry("pipeline"); // camera pipeline in use
+
+        //https://docs.limelightvision.io/en/latest/coordinate_systems_fiducials.html
+        //above docs have info on using botpose data
     }
 
     /**
@@ -125,6 +129,25 @@ public class Limelight {
      */
     public void setCamMode(CamMode mode) {
         camMode.setNumber(mode.value);
+    }
+
+    /**
+     * Get current vision pipeline
+     * @return int (0-9)
+     * @default 0
+     */
+    public int getCamPipeline() {
+        return pipline.getNumber(0).intValue();
+    }
+
+    /**
+     * Set current vision pipeline
+     * @param pMode int (0-9)
+     */
+    public void setCamPipeline(int pMode) {
+        if (pMode >= 0 && pMode < 10) {
+            pipeline.setNumber(pMode);
+        }
     }
 
     /**
